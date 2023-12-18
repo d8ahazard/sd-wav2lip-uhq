@@ -7,6 +7,8 @@ import torch
 import scripts.wav2lip.face_detection as face_detection
 from imutils import face_utils
 import subprocess
+
+from modules.paths_internal import models_path
 from modules.shared import state, opts
 from pkg_resources import resource_filename
 import modules.face_restoration
@@ -94,7 +96,7 @@ class Wav2LipUHQ:
         print("[INFO] Loading the predictor...")
         detector = face_detection.FaceAlignment(face_detection.LandmarksType._2D,
                                                 flip_input=False, device=self.device)
-        predictor = dlib.shape_predictor(self.wav2lip_folder + "/predicator/shape_predictor_68_face_landmarks.dat")
+        predictor = dlib.shape_predictor(os.path.join(models_path, 'wav2lip', 'shape_predictor_68_face_landmarks.dat'))
         return detector, predictor
 
     def initialize_video_streams(self):

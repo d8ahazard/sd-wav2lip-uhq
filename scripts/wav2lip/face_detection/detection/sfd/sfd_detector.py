@@ -2,6 +2,7 @@ import os
 import cv2
 from torch.utils.model_zoo import load_url
 import modules.shared as shared
+from modules.paths_internal import models_path
 from ..core import FaceDetector
 
 from .net_s3fd import s3fd
@@ -14,7 +15,7 @@ models_urls = {
 
 
 class SFDDetector(FaceDetector):
-    def __init__(self, device, path_to_detector=os.path.join(os.path.dirname(os.path.abspath(__file__)), 's3fd.pth'), verbose=False):
+    def __init__(self, device, path_to_detector=os.path.join(models_path, 'wav2lip', 's3fd.pth'), verbose=False):
         super(SFDDetector, self).__init__(device, verbose)
         shared.cmd_opts.disable_safe_unpickle = True
         # Initialise the face detector

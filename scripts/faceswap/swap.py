@@ -7,6 +7,8 @@ import insightface
 from dataclasses import dataclass
 from typing import List, Union, Dict, Set, Tuple
 from pkg_resources import resource_filename
+
+from modules.paths_internal import models_path
 from modules.shared import state, opts
 import modules.face_restoration
 from modules.upscaler import Upscaler, UpscalerData
@@ -48,11 +50,16 @@ class FaceSwap:
         self.resize_factor = resize_factor
         self.code_former_weight = code_former_weight
         self.face_restore_model = face_restore_model
-        self.model = self.faceswap_folder + "/model/inswapper_128.onnx"
+        model_paths = [os.path.join(models_path, 'facefusion', 'inswapper_128.onnx'), os.path.join(models_path, 'wav2lip', 'inswapper_128.onnx')]
+        for model_path in model_paths:
+            if os.path.isfile(model_path):
+                self.model = model_path
+                break
+        else:
+            print("WARNING: No model found for face swap")
         self.faces_index = {face_index}
         self.ffmpeg_binary = self.find_ffmpeg_binary()
-        model_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), self.model)
-        self.face_swapper = insightface.model_zoo.get_model(model_path, providers=providers)
+        self.face_swapper = insightface.model_zoo.get_model(self.model, providers=providers)
         self.face_analyser = insightface.app.FaceAnalysis(name="buffalo_l", providers=providers)
         self.face_analyser.prepare(ctx_id=0, det_size=(640, 640))
         self.mel_step_size = 16

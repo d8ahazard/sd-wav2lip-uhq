@@ -8,6 +8,8 @@ from scripts.wav2lip.models import Wav2Lip
 import modules.shared as shared
 from pkg_resources import resource_filename
 
+from modules.paths_internal import models_path
+
 
 class W2l:
     def __init__(self, face, audio, checkpoint, nosmooth, resize_factor, pad_top, pad_bottom, pad_left, pad_right, face_swap_img):
@@ -32,7 +34,8 @@ class W2l:
         self.resize_factor = resize_factor
         self.rotate = False
         self.crop = [0, -1, 0, -1]
-        self.checkpoint_path = self.wav2lip_folder + '/checkpoints/' + self.checkpoint + '.pth'
+        self.checkpoint_path = os.path.join(models_path, "wav2lip", self.checkpoint + ".pth")
+        #self.checkpoint_path = self.wav2lip_folder + '/checkpoints/' + self.checkpoint + '.pth'
         self.outfile = self.wav2lip_folder + '/results/result_voice.mp4'
         print('Using {} for inference.'.format(self.device))
         self.ffmpeg_binary = self.find_ffmpeg_binary()
