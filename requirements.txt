@@ -7,7 +7,6 @@ requests
 pillow
 librosa==0.10.1
 opencv-contrib-python
-tqdm
 numba
 imutils
 imageio_ffmpeg
@@ -17,3 +16,4 @@ onnx==1.15.0
 onnxruntime==1.16.3
 onnxruntime-gpu==1.16.3
 ifnude
+--extra-index-url https://download.pytorch.org/whl/cu118
